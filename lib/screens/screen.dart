@@ -13,3 +13,4 @@ part 'splash_screen/screen.dart';
 part 'boarding/screen.dart';
 part 'login/screen.dart';
 part 'register/screen.dart';
+part 'home/screen.dart';
