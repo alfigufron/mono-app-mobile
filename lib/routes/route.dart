@@ -15,5 +15,6 @@ class AppRoutes extends Module {
     r.child('/boarding', child: (context) => const BoardingScreen());
     r.child('/auth/login', child: (context) => const LoginScreen());
     r.child('/auth/register', child: (context) => const RegisterScreen());
+    r.child('/home', child: (context) => const HomeScreen());
   }
 }

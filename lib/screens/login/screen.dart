@@ -98,7 +98,7 @@ class FormLogin extends StatelessWidget {
       SizedBox(
         width: double.infinity,
         child: TextButton(
-          onPressed: () => print('login'),
+          onPressed: () => Modular.to.navigate('/home'),
           style: appTextButtonStyle.merge(
             ButtonStyle(
               foregroundColor: MaterialStateProperty.all(kWhiteColor),
