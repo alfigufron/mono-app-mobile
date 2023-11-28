@@ -16,7 +16,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   _navigateToBoardingScreen() async {
     await Future.delayed(const Duration(seconds: 3));
-    Modular.to.navigate('/boarding');
+    Modular.to.navigate('/dashboard');
   }
 
   @override
