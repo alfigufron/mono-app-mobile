@@ -10,47 +10,60 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 35, right: 35, top: 60),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [LoginHeading(), SizedBox(height: 36), FormLogin()],
+    return LoginBlocListener(
+      listener: (context, bloc, state) {
+        if (state is LoginSuccessState) {
+          Modular.to.navigate('/dashboard');
+        } else {
+          Modular.to.navigate('/auth/login');
+        }
+      },
+      child: Scaffold(
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 35, right: 35, top: 60),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      LoginHeading(),
+                      SizedBox(height: 36),
+                      FormLogin()
+                    ],
+                  ),
                 ),
-              ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      "Don’t have an account?",
-                      style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0XFF747980)),
-                    ),
-                    const SizedBox(width: 4),
-                    TextButton(
-                      onPressed: () => Modular.to.navigate('/auth/register'),
-                      style: appTextButtonStyle,
-                      child: const Text(
-                        "Sign up",
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        "Don’t have an account?",
                         style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
-                            color: Color(0XFF429690)),
+                            color: Color(0XFF747980)),
                       ),
-                    ),
-                  ],
-                ),
-              )
-            ],
+                      const SizedBox(width: 4),
+                      TextButton(
+                        onPressed: () => Modular.to.navigate('/auth/register'),
+                        style: appTextButtonStyle,
+                        child: const Text(
+                          "Sign up",
+                          style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0XFF429690)),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -81,48 +94,58 @@ class FormLogin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      const AppInputText(
-        label: 'Email Address',
-        icon: LocalIcons.mail2,
-        hint: 'Your email',
-      ),
-      const SizedBox(height: 18),
-      const AppInputText(
-        label: 'Password',
-        icon: LocalIcons.fingerprint4,
-        hint: 'Your password',
-        obscureText: true,
-      ),
-      const SizedBox(height: 26),
-      SizedBox(
-        width: double.infinity,
-        child: TextButton(
-          onPressed: () => Modular.to.navigate('/home'),
-          style: appTextButtonStyle.merge(
-            ButtonStyle(
-              foregroundColor: MaterialStateProperty.all(kWhiteColor),
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(6),
+    return LoginBlocBuilder(builder: (context, bloc, state) {
+      return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        AppInputText(
+          label: 'Email Address',
+          icon: LocalIcons.mail2,
+          hint: 'Your email',
+          onChanged: (value) {
+            bloc.add(LoginUpdateRequest(
+                request: state.request!.copyWith(email: value)));
+          },
+        ),
+        const SizedBox(height: 18),
+        AppInputText(
+          label: 'Password',
+          icon: LocalIcons.fingerprint4,
+          hint: 'Your password',
+          obscureText: true,
+          onChanged: (value) {
+            bloc.add(LoginUpdateRequest(
+                request: state.request!.copyWith(password: value)));
+          },
+        ),
+        const SizedBox(height: 26),
+        SizedBox(
+          width: double.infinity,
+          child: TextButton(
+            onPressed: () => bloc.add(LoginSubmit()),
+            style: appTextButtonStyle.merge(
+              ButtonStyle(
+                foregroundColor: MaterialStateProperty.all(kWhiteColor),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                ),
+                backgroundColor: MaterialStateProperty.all(
+                  const Color(0xFF429690),
                 ),
               ),
-              backgroundColor: MaterialStateProperty.all(
-                const Color(0xFF429690),
+            ),
+            child: const Padding(
+              padding: EdgeInsets.symmetric(vertical: 10),
+              child: Text(
+                'Log In',
+                style: TextStyle(
+                    fontSize: 14, fontWeight: FontWeight.w600, height: 24 / 14),
+                textAlign: TextAlign.center,
               ),
             ),
           ),
-          child: const Padding(
-            padding: EdgeInsets.symmetric(vertical: 10),
-            child: Text(
-              'Log In',
-              style: TextStyle(
-                  fontSize: 14, fontWeight: FontWeight.w600, height: 24 / 14),
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ),
-      )
-    ]);
+        )
+      ]);
+    });
   }
 }
