@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:loader_overlay/loader_overlay.dart';
-import 'package:mono_app/routes/route.dart';
+import 'package:mono_app/common/injection/injection.dart';
+import 'package:mono_app/common/routes/route.dart';
+import 'package:mono_app/widgets/global_state_provider.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(ModularApp(module: AppRoutes(), child: const MyApp()));
+  await Future.wait([configureDependencies()]);
+  runApp(ModularApp(
+      module: AppRoutes(), child: const GlobalStateProvider(child: MyApp())));
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return GlobalLoaderOverlay(
@@ -20,7 +23,7 @@ class MyApp extends StatelessWidget {
         title: 'Mono App',
         builder: (context, child) {
           return MediaQuery(
-            data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+            data: MediaQuery.of(context).copyWith(),
             child: child ?? Container(),
           );
         },
