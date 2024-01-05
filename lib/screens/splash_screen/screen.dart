@@ -8,21 +8,30 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    super.initState();
-    _navigateToBoardingScreen();
+  _navigateToBoardingScreen() async {
+    Modular.to.navigate('/dashboard');
   }
 
-  _navigateToBoardingScreen() async {
-    await Future.delayed(const Duration(seconds: 3));
-    Modular.to.navigate('/dashboard');
+  _navigateToLoginScreen() async {
+    Modular.to.navigate('/auth/login');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
+        body: BlocProvider(
+      create: (context) => getIt<SplashCubit>()..checkTokenAvailability(),
+      child: BlocListener<SplashCubit, SplashState>(
+        listener: (context, state) {
+          if (state is SplashSuccessRetrievingToken) {
+            _navigateToBoardingScreen();
+          } else if (state is SplashFailedRetrievingToken) {
+            _navigateToLoginScreen();
+          } else {
+            _navigateToLoginScreen();
+          }
+        },
+        child: Container(
             decoration: const BoxDecoration(
                 gradient: LinearGradient(
               colors: [
@@ -32,6 +41,8 @@ class _SplashScreenState extends State<SplashScreen> {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             )),
-            child: Center(child: AppLogo(color: kWhiteColor, size: 52))));
+            child: const Center(child: AppLogo(color: kWhiteColor, size: 52))),
+      ),
+    ));
   }
 }
