@@ -1,14 +1,21 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of '../widget.dart';
 
 class AppInputText extends StatelessWidget {
   final String? label;
   final String? icon;
   final String? hint;
-  final bool obscureText;
+  final bool? obscureText;
+  final void Function(String)? onChanged;
 
-  const AppInputText(
-      {Key? key, this.label, this.icon, this.hint, this.obscureText = false})
-      : super(key: key);
+  const AppInputText({
+    Key? key,
+    this.label,
+    this.icon,
+    this.hint,
+    this.obscureText,
+    this.onChanged,
+  }) : super(key: key);
 
   final TextStyle labelTextStyle = const TextStyle(
       color: Color(0XFF666666), fontSize: 14, fontWeight: FontWeight.w500);
@@ -28,8 +35,9 @@ class AppInputText extends StatelessWidget {
           border: Border.all(color: const Color(0XFFDDDDDD), width: 1),
         ),
         child: TextFormField(
-          cursorColor: Color(0XFF429690),
-          obscureText: obscureText,
+          onChanged: onChanged,
+          obscureText: obscureText ?? false,
+          cursorColor: const Color(0XFF429690),
           decoration: InputDecoration(
               hintText: hint,
               hintStyle:
@@ -43,7 +51,6 @@ class AppInputText extends StatelessWidget {
                         icon!,
                         width: 24,
                         height: 24,
-                        color: const Color(0XFF666666),
                       ),
                     )
                   : null,

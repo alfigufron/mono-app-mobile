@@ -437,16 +437,7 @@ class _BaseLayoutState extends State<BaseLayout> {
                   controller: _searchController,
                   hintText: widget.hintText,
                 )
-              : Container(
-                  // padding: const EdgeInsets.symmetric(horizontal: 12),
-                  // child: SearchBar.v2(
-                  //   focusNode: _searchFocusNode,
-                  //   onChanged: widget.onSearch,
-                  //   controller: _searchController,
-                  //   hintText: widget.hintText,
-                  //   onCleared: widget.onClear,
-                  // ),
-                  ));
+              : Container());
     }
     return null;
   }
@@ -454,7 +445,7 @@ class _BaseLayoutState extends State<BaseLayout> {
   Widget _buildIcon() {
     switch (widget.baseLayoutTheme) {
       case BaseLayoutTheme.v2:
-        return Icon(
+        return const Icon(
           Icons.arrow_back_ios,
           color: Colors.blueGrey,
         );
@@ -493,82 +484,72 @@ class _BaseLayoutState extends State<BaseLayout> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        if (widget.onBackTap != null) {
-          widget.onBackTap!();
-        } else {
-          Navigator.pop(context);
-        }
-        return true;
-      },
-      child: Scaffold(
-        backgroundColor: widget.backgroundColor ?? Colors.grey,
-        // backgroundColor: Colors.red,
-        floatingActionButton: widget.floatingActionButton,
-        floatingActionButtonAnimator: widget.floatingActionButtonAnimator,
-        floatingActionButtonLocation: widget.floatingActionButtonLocation,
-        appBar: widget.appBar == null
-            ? AppBar(
-                title: _buildTitle(context),
-                backgroundColor: widget.appBarBackgroundColor ??
-                    setConfigByVersion<Color>(Colors.grey, Colors.grey),
-                automaticallyImplyLeading: false,
-                elevation: 0,
-                centerTitle: false,
-                bottom: _searchBar,
-                systemOverlayStyle: SystemUiOverlayStyle.dark,
-              )
-            : null,
-        bottomNavigationBar: widget.bottomNavigationBar,
-        body: Stack(
-          children: [
-            if (widget.backgroundImage != null)
-              Positioned.fill(
-                child: Image(
-                  image: widget.backgroundImage!,
-                  fit: BoxFit.cover,
+    return Scaffold(
+      backgroundColor: widget.backgroundColor ?? Colors.grey,
+      // backgroundColor: Colors.red,
+      floatingActionButton: widget.floatingActionButton,
+      floatingActionButtonAnimator: widget.floatingActionButtonAnimator,
+      floatingActionButtonLocation: widget.floatingActionButtonLocation,
+      appBar: widget.appBar == null
+          ? AppBar(
+              title: _buildTitle(context),
+              backgroundColor: widget.appBarBackgroundColor ??
+                  setConfigByVersion<Color>(Colors.grey, Colors.grey),
+              automaticallyImplyLeading: false,
+              elevation: 0,
+              centerTitle: false,
+              bottom: _searchBar,
+              systemOverlayStyle: SystemUiOverlayStyle.dark,
+            )
+          : null,
+      bottomNavigationBar: widget.bottomNavigationBar,
+      body: Stack(
+        children: [
+          if (widget.backgroundImage != null)
+            Positioned.fill(
+              child: Image(
+                image: widget.backgroundImage!,
+                fit: BoxFit.cover,
+              ),
+            ),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (widget.appBar != null) widget.appBar!,
+              Expanded(
+                child: Container(
+                  // color: PColors.background.b100,
+                  padding: widget.contentPadding ?? const EdgeInsets.all(12),
+                  child: widget.body,
                 ),
               ),
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (widget.appBar != null) widget.appBar!,
-                Expanded(
-                  child: Container(
-                    // color: PColors.background.b100,
-                    padding: widget.contentPadding ?? const EdgeInsets.all(12),
-                    child: widget.body,
-                  ),
-                ),
-                if (widget.footer != null &&
-                    widget.footerPosition ==
-                        BaseLayoutFooterPosition.fixed) ...[
-                  // const Spacer(),
-                  Container(
-                    width: double.infinity,
-                    padding: widget.footerPadding ??
-                        const EdgeInsets.symmetric(vertical: 12),
-                    color: setConfigByVersion<Color>(Colors.grey, Colors.grey),
-                    child: UnconstrainedBox(child: widget.footer),
-                  )
-                ]
-              ],
-            ),
-            if (widget.footer != null &&
-                widget.footerPosition == BaseLayoutFooterPosition.floating)
-              // const Spacer(),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
+              if (widget.footer != null &&
+                  widget.footerPosition ==
+                      BaseLayoutFooterPosition.fixed) ...[
+                // const Spacer(),
+                Container(
                   width: double.infinity,
                   padding: widget.footerPadding ??
                       const EdgeInsets.symmetric(vertical: 12),
+                  color: setConfigByVersion<Color>(Colors.grey, Colors.grey),
                   child: UnconstrainedBox(child: widget.footer),
-                ),
-              )
-          ],
-        ),
+                )
+              ]
+            ],
+          ),
+          if (widget.footer != null &&
+              widget.footerPosition == BaseLayoutFooterPosition.floating)
+            // const Spacer(),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                width: double.infinity,
+                padding: widget.footerPadding ??
+                    const EdgeInsets.symmetric(vertical: 12),
+                child: UnconstrainedBox(child: widget.footer),
+              ),
+            )
+        ],
       ),
     );
   }
