@@ -1,4 +1,5 @@
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:mono_app/screens/dashboard/screen.dart';
 import 'package:mono_app/screens/screen.dart';
 
 class Routes {
@@ -16,5 +17,6 @@ class AppRoutes extends Module {
     r.child('/auth/login', child: (context) => const LoginScreen());
     r.child('/auth/register', child: (context) => const RegisterScreen());
     r.child('/home', child: (context) => const HomeScreen());
+    r.child('/dashboard', child: (context) => const DashboardScreen());
   }
 }

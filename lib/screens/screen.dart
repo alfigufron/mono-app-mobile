@@ -1,13 +1,19 @@
-import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:mono_app/constants/constant.dart';
+import 'package:mono_app/common/constants/constant.dart';
+import 'package:mono_app/common/injection/injection.dart';
+import 'package:mono_app/screens/home/home_cubit_implementor.dart';
+import 'package:mono_app/screens/login/bloc/login_bloc.dart';
+import 'package:mono_app/screens/login/login_bloc_implementor.dart';
+import 'package:mono_app/screens/register/cubit/register_state.dart';
+import 'package:mono_app/screens/register/register_cubit_implementor.dart';
+import 'package:mono_app/screens/splash_screen/cubit/splash_cubit.dart';
 import 'package:mono_app/theme/colors.dart';
+import 'package:mono_app/widgets/common/base_layout.dart';
+import 'package:mono_app/widgets/history_card.dart';
 import 'package:mono_app/widgets/widget.dart';
+import 'package:intl/intl.dart';
 
 part 'splash_screen/screen.dart';
 part 'boarding/screen.dart';
