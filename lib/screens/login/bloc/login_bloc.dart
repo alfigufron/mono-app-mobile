@@ -31,6 +31,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<LoginSubmit>(_submit);
     on<LoginInvalidate>(_invalidate);
     on<Logout>(_logout);
+    on<UpdateUser>(_setUser);
   }
 
   void _updateRequest(LoginUpdateRequest event, emit) {
@@ -41,7 +42,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   void _submit(LoginSubmit event, emit) async {
     emit(LoginLoadingState(newState: state));
-    await secureStorage.deleteAll();
     final result = await authenticationRepository.login(state.request!);
     await result.fold((l) async {
       await secureStorage.deleteAll();
@@ -55,8 +55,18 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   void _logout(Logout event, emit) async {
     emit(LogoutLoadingState(newState: state));
     await secureStorage.deleteAll();
-    // logout handler
     emit(LogoutSuccessState(newState: state));
+  }
+
+  void _setUser(UpdateUser event, emit) async {
+    emit(LogoutLoadingState(newState: state));
+    String? email = await secureStorage.read(key: CommonStorageKeys.email);
+    String? name = await secureStorage.read(key: CommonStorageKeys.name);
+    User? user = User(
+      name: name,
+      email: email,
+    );
+    emit(LoginSuccessState(newState: state.copyWith(user: user)));
   }
 
   void _setLocalUserInfo(Token token) async {
@@ -66,13 +76,18 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     );
     await secureStorage.write(
       key: CommonStorageKeys.email,
-      value: state.request?.email,
+      value: state.user?.email,
+    );
+
+    await secureStorage.write(
+      key: CommonStorageKeys.name,
+      value: state.user?.name,
     );
   }
 
   void _invalidate(LoginInvalidate event, emit) async {
     try {
-      await secureStorage.deleteAll();
+    //   await secureStorage.deleteAll();
     } catch (e) {
       emit(LoginFailedState(
           newState: state.copyWith(

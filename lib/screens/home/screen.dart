@@ -95,7 +95,7 @@ class ListTransaction extends StatelessWidget {
           HomeCubitBuilder(
             builder: (context, bloc, state) {
               return SizedBox(
-                height: 180,
+                height: MediaQuery.of(context).size.height / 3,
                 child: SingleChildScrollView(
                   child: Column(
                     children: List.generate(state.history?.records?.length ?? 0,

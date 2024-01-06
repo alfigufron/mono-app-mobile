@@ -20,6 +20,7 @@ class LoginUpdateRequest extends LoginEvent {
 }
 
 class LoginSubmit extends LoginEvent {}
+class UpdateUser extends LoginEvent {}
 
 class LoginInvalidate extends LoginEvent {}
 

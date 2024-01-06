@@ -3,26 +3,40 @@ import 'package:flutter/material.dart';
 class MyDropdownTextField extends StatefulWidget {
   final List<String> items;
   final Function(String) onItemSelected;
+  final String initialValue; 
 
-  const MyDropdownTextField(
-      {Key? key, required this.items, required this.onItemSelected})
-      : super(key: key);
+  const MyDropdownTextField({
+    Key? key,
+    required this.items,
+    required this.onItemSelected,
+    required this.initialValue, 
+  }) : super(key: key);
 
   @override
   MyDropdownTextFieldState createState() => MyDropdownTextFieldState();
 }
 
 class MyDropdownTextFieldState extends State<MyDropdownTextField> {
-  String? _selectedValue = '';
+  String? _selectedValue;
+
   final TextStyle labelTextStyle = const TextStyle(
-      color: Color(0XFF666666), fontSize: 14, fontWeight: FontWeight.w500);
+    color: Color(0XFF666666),
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedValue = widget.initialValue;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-         Text(
+        Text(
           'Type',
           style: labelTextStyle,
         ),
@@ -40,17 +54,19 @@ class MyDropdownTextFieldState extends State<MyDropdownTextField> {
             },
             cursorColor: const Color(0XFF429690),
             decoration: InputDecoration(
-                suffixIcon: InkWell(
-                  onTap: () {
-                    _showDropdown(context);
-                  },
-                  child: const Icon(Icons.arrow_drop_down),
-                ),
-                hintStyle: const TextStyle(
-                    fontSize: 14, fontWeight: FontWeight.w500),
-                contentPadding: const EdgeInsets.symmetric(
-                    vertical: 16.0, horizontal: 16.0),
-                border: InputBorder.none),
+              suffixIcon: InkWell(
+                onTap: () {
+                  _showDropdown(context);
+                },
+                child: const Icon(Icons.arrow_drop_down),
+              ),
+              hintStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+              contentPadding: const EdgeInsets.symmetric(
+                vertical: 16.0,
+                horizontal: 16.0,
+              ),
+              border: InputBorder.none,
+            ),
           ),
         ),
       ],

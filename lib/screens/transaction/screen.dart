@@ -31,10 +31,10 @@ class TransactionScreen extends StatelessWidget {
              Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(height: 18),
+                SizedBox(height: 80),
                  Text(
                   'Add Transaction',
-                  style: TextStyle(fontSize: 14, color: Colors.white),
+                  style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.w600),
                 ),
               ],
             ),
@@ -55,82 +55,88 @@ class TransactionScreen extends StatelessWidget {
               context.read<DashboardCubit>().updateMenu(HomeMenu.home);
             }
           },
-          child: Padding(
-            padding:
-                const EdgeInsets.only(top: 70, left: 24, bottom: 60, right: 24),
-            child: Container(
-              padding: const EdgeInsets.all(28),
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(30)),
-              ),
-              child: TransactionCubitBuilder(
-                builder: (context, bloc, state) {
-                  return Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      MyDropdownTextField(
-                        items: const [
-                          'INCOME',
-                          'EXPENSE',
-                        ],
-                        onItemSelected: (String selectedValue) {
-                          bloc.updatePayload(
-                              state.transaction!.copyWith(type: selectedValue));
-                        },
-                      ),
-                      const SizedBox(height: 16),
-                      AppInputText(
-                        label: 'Name',
-                        onChanged: (value) {
-                          bloc.updatePayload(
-                              state.transaction!.copyWith(name: value));
-                        },
-                      ),
-                      const SizedBox(height: 16),
-                      AppInputText(
-                        label: 'Amount',
-                        onChanged: (value) {
-                          bloc.updatePayload(
-                              state.transaction!.copyWith(amount: value));
-                        },
-                      ),
-                      const SizedBox(height: 16),
-                      DatePickerTextField(
-                        label: 'Date',
-                        onDateSelected: (value) {
-                          bloc.updatePayload(state.transaction!.copyWith(
-                              date: DateFormat('DD-MM-yyyy')
-                                  .format(value)
-                                  .toString()));
-                        },
-                      ),
-                      const SizedBox(height: 16),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Button(
-                              decoration: const BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(8))),
-                              title: 'Apply',
-                              backgroundColor: const Color(0xff3E7C78),
-                              onTap: () {
-                                bloc.createTransaction();
-                              },
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                alignment: Alignment.center,
+                padding: const EdgeInsets.all(28),
+                height: MediaQuery.of(context).size.height / 1.7,
+                width: MediaQuery.of(context).size.width,
+                margin: const EdgeInsets.symmetric(horizontal: 24),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(30)),
+                ),
+                child: TransactionCubitBuilder(
+                  builder: (context, bloc, state) {
+                    String initialValue = 'INCOME';
+                    return Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        MyDropdownTextField(
+                          initialValue: initialValue,
+                          items: const [
+                            'INCOME',
+                            'EXPENSE',
+                          ],
+                          onItemSelected: (String? selectedValue) {
+                            bloc.updatePayload(
+                                state.transaction!.copyWith(type: selectedValue ?? initialValue));
+                          },
+                        ),
+                        const SizedBox(height: 16),
+                        AppInputText(
+                          label: 'Name',
+                          onChanged: (value) {
+                            bloc.updatePayload(
+                                state.transaction!.copyWith(name: value));
+                          },
+                        ),
+                        const SizedBox(height: 16),
+                        AppInputText(
+                          label: 'Amount',
+                          onChanged: (value) {
+                            bloc.updatePayload(
+                                state.transaction!.copyWith(amount: value));
+                          },
+                        ),
+                        const SizedBox(height: 16),
+                        DatePickerTextField(
+                          label: 'Date',
+                          onDateSelected: (value) {
+                            bloc.updatePayload(state.transaction!.copyWith(
+                                date: DateFormat('yyyy-MM-DD')
+                                    .format(value)
+                                    .toString()));
+                          },
+                        ),
+                        const SizedBox(height: 16),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Button(
+                                decoration: const BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(8))),
+                                title: 'Apply',
+                                backgroundColor: const Color(0xff3E7C78),
+                                onTap: () {
+                                  bloc.createTransaction();
+                                },
+                              ),
                             ),
-                          ),
-                        ],
-                      )
-                    ],
-                  );
-                },
+                          ],
+                        )
+                      ],
+                    );
+                  },
+                ),
               ),
-            ),
+            ],
           ),
         ),
       ),
