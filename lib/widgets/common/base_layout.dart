@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:mono_app/common/constants/constant.dart';
 
 enum BaseLayoutTheme { v1, v2 }
 
@@ -200,13 +201,6 @@ class BaseLayoutAppBar extends StatelessWidget {
                       flex: 3,
                       child: _buildTitle(context),
                     ),
-                    // if (!Util.falsyChecker(actions))
-                    // ...[
-                    // const Spacer(
-                    //   flex: 1,
-                    // ),
-                    // ...actions!
-                    // ]
                   ],
                 ),
               ),
@@ -242,7 +236,7 @@ class BaseLayout extends StatefulWidget {
   final Color? appBarBackgroundColor;
   final Widget? floatingActionButton;
   final FloatingActionButtonAnimator? floatingActionButtonAnimator;
-  final ImageProvider? backgroundImage;
+  final Widget? backgroundImage;
   final FloatingActionButtonLocation? floatingActionButtonLocation;
   final BaseLayoutTheme baseLayoutTheme;
 
@@ -292,50 +286,6 @@ class BaseLayout extends StatefulWidget {
         onClear = null,
         super(key: key);
 
-  const BaseLayout.withSearchBar({
-    Key? key,
-    required this.title,
-    this.onBackTap,
-    this.bottomNavigationBar,
-    required this.body,
-    required this.onSearch,
-    this.footerPadding,
-    this.contentPadding,
-    this.backgroundColor,
-    this.hintText,
-    this.footer,
-    this.floatingActionButton,
-    this.floatingActionButtonAnimator,
-    this.backgroundImage,
-    this.floatingActionButtonLocation,
-    this.onClear,
-    this.footerPosition = BaseLayoutFooterPosition.fixed,
-    this.appBarBackgroundColor,
-    this.baseLayoutTheme = BaseLayoutTheme.v1,
-  })  : appBar = null,
-        super(key: key);
-  const BaseLayout.customAppBar({
-    Key? key,
-    this.bottomNavigationBar,
-    required this.body,
-    this.footerPadding,
-    this.contentPadding,
-    this.backgroundColor,
-    this.hintText,
-    this.footer,
-    required this.appBar,
-    this.floatingActionButton,
-    this.backgroundImage,
-    this.floatingActionButtonAnimator,
-    this.floatingActionButtonLocation,
-    this.footerPosition = BaseLayoutFooterPosition.fixed,
-    this.appBarBackgroundColor,
-    this.baseLayoutTheme = BaseLayoutTheme.v1,
-  })  : onSearch = null,
-        title = '',
-        onBackTap = null,
-        onClear = null,
-        super(key: key);
 
   @override
   State<BaseLayout> createState() => _BaseLayoutState();
@@ -485,33 +435,29 @@ class _BaseLayoutState extends State<BaseLayout> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: widget.backgroundColor ?? Colors.grey,
-      // backgroundColor: Colors.red,
       floatingActionButton: widget.floatingActionButton,
       floatingActionButtonAnimator: widget.floatingActionButtonAnimator,
       floatingActionButtonLocation: widget.floatingActionButtonLocation,
-      appBar: widget.appBar == null
-          ? AppBar(
-              title: _buildTitle(context),
-              backgroundColor: widget.appBarBackgroundColor ??
-                  setConfigByVersion<Color>(Colors.grey, Colors.grey),
-              automaticallyImplyLeading: false,
-              elevation: 0,
-              centerTitle: false,
-              bottom: _searchBar,
-              systemOverlayStyle: SystemUiOverlayStyle.dark,
-            )
-          : null,
+      appBar: null,
+      // widget.appBar == null
+      //     ? AppBar(
+      //         title: _buildTitle(context),
+      //         backgroundColor: widget.appBarBackgroundColor ??
+      //             setConfigByVersion<Color>(Colors.grey, Colors.grey),
+      //         automaticallyImplyLeading: false,
+      //         elevation: 0,
+      //         centerTitle: false,
+      //         bottom: _searchBar,
+      //         systemOverlayStyle: SystemUiOverlayStyle.dark,
+      //       )
+      //     : null,
       bottomNavigationBar: widget.bottomNavigationBar,
       body: Stack(
         children: [
-          if (widget.backgroundImage != null)
-            Positioned.fill(
-              child: Image(
-                image: widget.backgroundImage!,
-                fit: BoxFit.cover,
-              ),
-            ),
+          Image.asset(LocalImages.background),
+          widget.backgroundImage ?? Container(),
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -524,8 +470,7 @@ class _BaseLayoutState extends State<BaseLayout> {
                 ),
               ),
               if (widget.footer != null &&
-                  widget.footerPosition ==
-                      BaseLayoutFooterPosition.fixed) ...[
+                  widget.footerPosition == BaseLayoutFooterPosition.fixed) ...[
                 // const Spacer(),
                 Container(
                   width: double.infinity,

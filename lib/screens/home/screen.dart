@@ -10,13 +10,13 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    return BaseLayout.customAppBar(
+    return BaseLayout.v2(
+      title: '',
       backgroundColor: Colors.white,
       contentPadding: EdgeInsets.zero,
       appBarBackgroundColor: const Color(0xff2A7C76),
-      appBar: Container(
+      backgroundImage: Container(
         padding: const EdgeInsets.symmetric(vertical: 70, horizontal: 24),
-        color: const Color(0xff2A7C76),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -55,7 +55,6 @@ class _HomeScreenState extends State<HomeScreen> {
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          SizedBox(height: 8),
           MasterCard(),
           SizedBox(height: 12),
           ListTransaction(),
@@ -96,7 +95,7 @@ class ListTransaction extends StatelessWidget {
           HomeCubitBuilder(
             builder: (context, bloc, state) {
               return SizedBox(
-                height: 289,
+                height: 180,
                 child: SingleChildScrollView(
                   child: Column(
                     children: List.generate(state.history?.records?.length ?? 0,

@@ -19,6 +19,7 @@ class _LoginScreenState extends State<LoginScreen> {
         }
       },
       child: Scaffold(
+         resizeToAvoidBottomInset: false,
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.only(left: 35, right: 35, top: 60),

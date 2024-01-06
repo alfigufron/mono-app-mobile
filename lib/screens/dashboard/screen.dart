@@ -30,8 +30,8 @@ class _DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DashboardCubitBuilder(builder: (context, cubit, state) {
-      return BaseLayout.customAppBar(
-        appBar: Container(),
+      return BaseLayout.v2(
+        title: '',
         backgroundColor: Colors.white,
         contentPadding: EdgeInsets.zero,
         body: AnimatedSwitcher(

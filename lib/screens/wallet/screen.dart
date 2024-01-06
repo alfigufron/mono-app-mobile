@@ -15,7 +15,7 @@ class WalletScreen extends StatelessWidget {
       title: 'My Wallet',
       appBarBackgroundColor: const Color(0xff2A7C76),
       body: Container(
-        padding: const EdgeInsets.all(28),
+        padding: const EdgeInsets.only(top:28,right:28,left:28),
         margin: const EdgeInsets.only(top: 80),
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
@@ -68,7 +68,7 @@ class WalletScreen extends StatelessWidget {
             HomeCubitBuilder(
               builder: (context, bloc, state) {
                 return SizedBox(
-                  height: 435,
+                  height: 355,
                   child: SingleChildScrollView(
                     child: Column(
                       children: List.generate(

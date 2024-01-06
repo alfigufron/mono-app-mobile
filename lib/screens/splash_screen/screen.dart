@@ -19,6 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
         body: BlocProvider(
       create: (context) => getIt<SplashCubit>()..checkTokenAvailability(),
       child: BlocListener<SplashCubit, SplashState>(

@@ -28,7 +28,7 @@ class AppInputText extends StatelessWidget {
           label!,
           style: labelTextStyle,
         ),
-      if (label != null) const SizedBox(height: 18),
+      if (label != null) const SizedBox(height: 8),
       Container(
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(Radius.circular(8)),
@@ -60,3 +60,4 @@ class AppInputText extends StatelessWidget {
     ]);
   }
 }
+
